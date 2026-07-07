@@ -1,9 +1,11 @@
 import { Logger } from "../Modules/Logger";
 import { Fragment } from "../Modules/FragmentTypes"
+import { Upload } from "../upload";
 
 export class Moonfaker extends Fragment {
     private logger: Logger = new Logger("Moonfaker");
     private server!: ReturnType<typeof Bun.serve>;
+    private upload: Upload = new Upload();
 
     constructor() { super(); }
 
@@ -18,7 +20,6 @@ export class Moonfaker extends Fragment {
 
     private async handleRequest(req: Request): Promise<Response> {
         const url = new URL(req.url);
-        const body = (await req.text()).trim();
 
         if (req.method === "OPTIONS") {
             return new Response(null, {
@@ -31,15 +32,19 @@ export class Moonfaker extends Fragment {
             });
         }
 
-        const response = await this.routeRequest(url, body, req);
+        const response = await this.routeRequest(url, req);
         
         response.headers.set("Access-Control-Allow-Origin", "*");
         return response;
     }
 
-    private async routeRequest(url: URL, body: string, req: Request): Promise<Response> {
+    private async routeRequest(url: URL, req: Request): Promise<Response> {
         switch (url.pathname) {
             case "/server/info": {
+                if (req.method !== "GET") {
+                    return new Response("Method Not Allowed", { status: 405 });
+                }
+                
                 return new Response(JSON.stringify({
                     result: {
                         klippy_connected: true,
@@ -53,6 +58,35 @@ export class Moonfaker extends Fragment {
             }
 
             case "/server/files/upload": {
+                if (req.method !== "POST") {
+                    return new Response("Method Not Allowed", { status: 405 });
+                }
+
+                if (!req.headers.get("content-type")?.startsWith("multipart/form-data")) {
+                    return new Response("Unsupported Media Type", { status: 415 });
+                }
+
+                const formData = await req.formData();
+                const file = formData.get("file") as File;
+
+                if (!file) {
+                    return new Response("No file provided", { status: 400 });
+                }
+
+                const fileName = file.name.endsWith(".gcode")
+                      ? file.name
+                        : `${file.name}.gcode`;
+
+                const arrayBuffer = await file.arrayBuffer();
+                const buffer = Buffer.from(arrayBuffer);
+
+                await this.upload.uploadToPrinter(fileName, {
+                    buffer: buffer,
+                    originalname: fileName,
+                    mimetype: file.type,
+                    size: file.size
+                });
+                return new Response(JSON.stringify({ result: "ok" }));
             }
 
             case "/printer/print/start": {

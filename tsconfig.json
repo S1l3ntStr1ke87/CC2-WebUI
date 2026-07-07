@@ -12,6 +12,6 @@
     "skipLibCheck": true,
     "types": ["bun"]
   },
-  "include": ["src/**/*.ts", "index.ts"],
+  "include": ["types.d.ts", "src/**/*.ts", "index.ts"],
   "exclude": ["node_modules", "dist"]
 }
