@@ -1,0 +1,9 @@
+# Folders
+node_modules/
+tools/
+dist/
+
+# Files
+package-lock.json
+.ds_store
+.env

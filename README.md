@@ -1,2 +1,2 @@
 # CC2-WebUI
-WebUI for the Centauri Carbon 2, Made in Typescript/React
+Simple LAN WebUI for the Centauri Carbon 2
