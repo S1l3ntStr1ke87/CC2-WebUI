@@ -1,8 +1,10 @@
 import crypto from "crypto";
 import { UploadedFile } from "../types";
+import { Logger } from "./Modules/Logger";
 
 const PRINTER_IP = process.env.PRINTER_IP || "";
 const PINCODE = process.env.PINCODE || "";
+const logger = new Logger("Upload");
 
 export class Upload {
     async uploadToPrinter(fileName: string, file: UploadedFile): Promise<void> {
@@ -12,8 +14,8 @@ export class Upload {
         try {
             let start = 0;
             while (start < total) {
-                const end = Math.min(start + 1024 * 1024, total);
-                const chunk = buffer.slice(start, end);
+                const end = Math.min(start + 1024 * 1024 - 1, total - 1);
+                const chunk = buffer.slice(start, end + 1);
 
                 const response = await fetch(`http://${PRINTER_IP}/upload`, {
                     method: "PUT",
@@ -29,10 +31,14 @@ export class Upload {
                     },
                     body: chunk
                 });
-                start = end;
+                start = end + 1;
+
+                if (!response.ok) {
+                    logger.info(`Failed to upload chunk: ${response.status} ${response.statusText}`);
+                }
             }
         } catch (error) {
-            console.error("Error uploading file to printer:", error);
+            logger.error("Error uploading file to printer:", error);
             throw error;
         }
     }
