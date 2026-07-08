@@ -1,9 +1,11 @@
 import crypto from "crypto";
-import { UploadedFile } from "../../types";
 import { Logger } from "./Cluster/Logger";
+import { SQLiteDB } from "./sqlitedb";
 
-const PRINTER_IP = process.env.PRINTER_IP || "";
-const PINCODE = process.env.PINCODE || "";
+const db = new SQLiteDB();
+
+const PRINTER_IP = process.env.PRINTER_IP || await db.getPrinterIP();
+const PINCODE = process.env.PINCODE || await db.getPincode();
 const logger = new Logger("Upload");
 
 export class Upload {

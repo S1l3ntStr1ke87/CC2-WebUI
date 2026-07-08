@@ -1,4 +1,4 @@
-export interface UploadedFile {
+interface UploadedFile {
     buffer: Buffer;
     originalname: string;
     mimetype?: string;
