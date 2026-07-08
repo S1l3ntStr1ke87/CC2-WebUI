@@ -6,4 +6,6 @@ dist/
 # Files
 package-lock.json
 .ds_store
+bun.lockb
+bun.lock
 .env

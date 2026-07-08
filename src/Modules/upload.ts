@@ -1,6 +1,6 @@
 import crypto from "crypto";
-import { UploadedFile } from "../types";
-import { Logger } from "./Modules/Logger";
+import { UploadedFile } from "../../types";
+import { Logger } from "./Cluster/Logger";
 
 const PRINTER_IP = process.env.PRINTER_IP || "";
 const PINCODE = process.env.PINCODE || "";

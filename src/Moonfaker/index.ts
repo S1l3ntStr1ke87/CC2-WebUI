@@ -1,6 +1,6 @@
-import { Logger } from "../Modules/Logger";
-import { Fragment } from "../Modules/FragmentTypes"
-import { Upload } from "../upload";
+import { Logger } from "../Modules/Cluster/Logger";
+import { Fragment } from "../Modules/Cluster/FragmentTypes";
+import { Upload } from "../Modules/upload";
 
 export class Moonfaker extends Fragment {
     private logger: Logger = new Logger("Moonfaker");
@@ -21,17 +21,6 @@ export class Moonfaker extends Fragment {
     private async handleRequest(req: Request): Promise<Response> {
         const url = new URL(req.url);
 
-        if (req.method === "OPTIONS") {
-            return new Response(null, {
-                status: 204,
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                    "Access-Control-Allow-Headers": "Authorization, Content-Type",
-                },
-            });
-        }
-
         const response = await this.routeRequest(url, req);
         
         response.headers.set("Access-Control-Allow-Origin", "*");
@@ -44,7 +33,7 @@ export class Moonfaker extends Fragment {
                 if (req.method !== "GET") {
                     return new Response("Method Not Allowed", { status: 405 });
                 }
-                
+
                 return new Response(JSON.stringify({
                     result: {
                         klippy_connected: true,

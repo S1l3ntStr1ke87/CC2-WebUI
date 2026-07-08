@@ -1,9 +1,8 @@
-import cluster from 'cluster'
-import os from 'os'
+import cluster from 'cluster';
 
-import { Logger } from './src/Modules/Logger'
+import { Logger } from './src/Modules/Cluster/Logger';
 
-import { FragmentInstance } from './src/Modules/FragmentTypes'
+import { FragmentInstance } from './src/Modules/Cluster/FragmentTypes';
 
 import { Moonfaker } from './src/Moonfaker';
 
