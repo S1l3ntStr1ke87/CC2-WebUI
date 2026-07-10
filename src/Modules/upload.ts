@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { Logger } from "./Cluster/Logger";
-import { SQLiteDB } from "./sqlitedb";
+import { SQLiteDB } from "./SQLiteDB";
 
 const db = new SQLiteDB();
 
@@ -27,7 +27,7 @@ export class Upload {
                         "Content-Range": `bytes ${start}-${end}/${total}`,
                         "X-File-Name": fileName,
                         "X-File-MD5": fileHash,
-                        "X-Token": PINCODE,
+                        "X-Token": PINCODE || "",
                         "Accept": "application/json",
                         "User-Agent": "ElegooLink/1.0.1"
                     },

@@ -3,7 +3,7 @@ FROM oven/bun:1
 WORKDIR /usr/src/app
 
 COPY package.json ./
-RUN bun install
+RUN bun run setup
 
 COPY . .
 

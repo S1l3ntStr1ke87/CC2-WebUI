@@ -5,11 +5,13 @@ import { Logger } from './src/Modules/Cluster/Logger';
 import { FragmentInstance } from './src/Modules/Cluster/FragmentTypes';
 
 import { Moonfaker } from './src/Moonfaker';
+import { Frontend } from './src/Frontend'
 
 const clusterLogger = new Logger("Cluster");
 
 const FragmentInstances: FragmentInstance[] = [ 
-    new FragmentInstance("Moonfaker", Moonfaker)
+    new FragmentInstance("Moonfaker", Moonfaker),
+    new FragmentInstance("Frontend", Frontend)
 ]
 
 const FragmentCrashCache: Map<Number, Number[]> = new Map<Number, Number[]>();
