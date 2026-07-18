@@ -1,8 +1,6 @@
 {
   "name": "CC2-WebUI-Frontend",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.ts",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

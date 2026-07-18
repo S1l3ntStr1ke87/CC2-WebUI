@@ -43,8 +43,23 @@ export class Frontend extends Fragment {
             }
             
             default:
-                return new Response("Not Found", { status: 404 });
+                return this.serveStatic(url.pathname);
         }
+    }
+
+    private async serveStatic(pathname: string): Promise<Response> {
+        let Path = decodeURIComponent(pathname);
+        Path = path.normalize(pathname).replace(/^(\.\.[/\\])+/, "");
+
+        const filePath = path.join(this.distDir, Path);
+        
+        const file = Bun.file(filePath)
+
+        if (!(await file.exists())) {
+            return new Response("404 Not Found", { status: 404});
+        }
+
+        return new Response(file);
     }
 
     public async Destroy(): Promise<void> {

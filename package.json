@@ -1,10 +1,13 @@
 {
   "name": "CC2-WebUI",
   "version": "0.0.1",
+  "description": "A Simple LAN WebUI For the Centauri Carbon 2",
   "private": false,
   "scripts": {
     "start": "bun index.ts",
-    "build": "bun tsc --outDir dist",
+    "dev": "cd src/Frontend && bun dev",
+    "vitebuild": "cd src/Frontend && bun run build",
+    "preview": "cd src/Frontend && bun run preview",
     "setup": "bun install && cd src/Frontend && bun install && bun run build"
   },
   "dependencies": {
