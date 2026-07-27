@@ -9,6 +9,5 @@
     "skipLibCheck": true,
     "types": ["vite"]
   },
-  "include": ["types.d.ts", "public/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

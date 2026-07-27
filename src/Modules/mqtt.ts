@@ -10,9 +10,12 @@ export class MQTT {
 
     private constructor() {}
 
-    public async connect(): Promise<void> {
+    static async connect(): Promise<MQTT> {
+        const instance = new MQTT();
+        
         const clientId = `cc2_disc_${Math.floor(1000 + Math.random() * 9000)}`;
-        mqtt.connect(`mqtt://${PRINTER_IP}:1883`, {
+
+        instance.client = mqtt.connect(`mqtt://${PRINTER_IP}:1883`, {
             clientId,
             username: "elegoo",
             password: PINCODE || "",
@@ -20,5 +23,6 @@ export class MQTT {
             keepalive: 60,
             connectTimeout: 8000,
         });
+        return instance;
     }
 }

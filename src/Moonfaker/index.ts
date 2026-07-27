@@ -1,15 +1,19 @@
 import { Logger } from "../Modules/Cluster/Logger";
 import { Fragment } from "../Modules/Cluster/FragmentTypes";
 import { Upload } from "../Modules/upload";
+import { MQTT } from "../Modules/mqtt";
 
 export class Moonfaker extends Fragment {
     private logger: Logger = new Logger("Moonfaker");
     private server!: ReturnType<typeof Bun.serve>;
     private upload: Upload = new Upload();
+    private mqtt!: MQTT;
 
     constructor() { super(); }
 
     async Create(): Promise<void> {
+        this.mqtt = await MQTT.connect();
+
         this.server = Bun.serve({
             port: "7125",
             fetch: this.handleRequest.bind(this),
@@ -79,6 +83,9 @@ export class Moonfaker extends Fragment {
             }
 
             case "/printer/print/start": {
+                if (req.method !== "POST") {
+                    return new Response("Method Not Allowed", { status: 405 });
+                }
             }
             
             default:
